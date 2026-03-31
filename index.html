@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>HULKY CURL — Smash Cars with Your Arms</title>
+  <link rel="stylesheet" href="style.css" />
+  <!-- MediaPipe -->
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils/control_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/pose/pose.js" crossorigin="anonymous"></script>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Oswald:wght@400;700&display=swap" rel="stylesheet"/>
+</head>
+<body>
+
+<!-- ========== MENU SCREEN ========== -->
+<div id="menuScreen" class="screen active">
+  <div class="menu-bg"></div>
+  <div class="menu-content">
+    <div class="title-wrap">
+      <h1 class="game-title">HULKY<br>CURL</h1>
+      <p class="subtitle">SMASH CARS WITH YOUR MUSCLES</p>
+    </div>
+
+    <div class="mode-section">
+      <h2 class="section-label">ARM MODE</h2>
+      <div class="toggle-row">
+        <button class="toggle-btn active" id="btnSingle" onclick="selectArmMode('single')">
+          💪 SINGLE ARM
+        </button>
+        <button class="toggle-btn" id="btnBoth" onclick="selectArmMode('both')">
+          🦾 BOTH ARMS
+        </button>
+      </div>
+    </div>
+
+    <div class="mode-section">
+      <h2 class="section-label">SPEED</h2>
+      <div class="speed-row">
+        <button class="speed-btn active" id="btnSlow" onclick="selectSpeed('slow')">
+          🐢 SLOW<br><span>1 car / 4s</span>
+        </button>
+        <button class="speed-btn" id="btnMedium" onclick="selectSpeed('medium')">
+          🚗 MEDIUM<br><span>1 car / 3s</span>
+        </button>
+        <button class="speed-btn" id="btnFast" onclick="selectSpeed('fast')">
+          ⚡ FAST<br><span>1 car / 2s</span>
+        </button>
+      </div>
+    </div>
+
+    <button class="start-btn" onclick="startGame()">
+      <span>SMASH IT</span>
+    </button>
+
+    <p class="hint">Allow camera access • Stand back so your upper body is visible</p>
+  </div>
+</div>
+
+<!-- ========== GAME SCREEN ========== -->
+<div id="gameScreen" class="screen">
+  <div class="hud">
+    <div class="hud-left">
+      <div class="score-box">
+        <span class="hud-label">SCORE</span>
+        <span class="hud-value" id="scoreDisplay">0</span>
+      </div>
+      <div class="score-box">
+        <span class="hud-label">BEST</span>
+        <span class="hud-value" id="bestDisplay">0</span>
+      </div>
+    </div>
+    <div class="hud-center">
+      <span class="mode-tag" id="modeTag">SINGLE ARM · SLOW</span>
+    </div>
+    <div class="hud-right">
+      <div class="angle-box">
+        <span class="hud-label">ANGLE</span>
+        <span class="hud-value" id="angleDisplay">—°</span>
+      </div>
+      <button class="pause-btn" onclick="pauseGame()">⏸</button>
+    </div>
+  </div>
+
+  <!-- Pose overlay camera -->
+  <div class="camera-wrap">
+    <video id="webcam" autoplay playsinline muted></video>
+    <canvas id="poseCanvas"></canvas>
+    <div class="cam-label">POSE CAM</div>
+    <div id="armStatusL" class="arm-status left">L: —</div>
+    <div id="armStatusR" class="arm-status right">R: —</div>
+  </div>
+
+  <!-- Main game canvas -->
+  <canvas id="gameCanvas"></canvas>
+
+  <!-- Throw indicator -->
+  <div id="throwIndicator" class="throw-indicator hidden">💥 THROW!</div>
+</div>
+
+<!-- ========== GAME OVER SCREEN ========== -->
+<div id="gameOverScreen" class="screen">
+  <div class="gameover-content">
+    <div class="gameover-title">GAME<br>OVER</div>
+    <div class="gameover-sub">Car overwhelm! Hulky couldn't handle it.</div>
+    <div class="score-final">
+      <div class="final-row">
+        <span>Score</span><span id="finalScore">0</span>
+      </div>
+      <div class="final-row best">
+        <span>Best</span><span id="finalBest">0</span>
+      </div>
+    </div>
+    <div class="gameover-btns">
+      <button class="go-btn primary" onclick="restartGame()">PLAY AGAIN</button>
+      <button class="go-btn secondary" onclick="goMenu()">MENU</button>
+    </div>
+  </div>
+</div>
+
+<script src="pose.js"></script>
+<script src="game.js"></script>
+</body>
+</html>
